@@ -1,0 +1,5 @@
+package com.associate.wfo.repository;
+
+public interface AssociateRepositary {
+
+}

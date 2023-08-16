@@ -1,0 +1,5 @@
+package com.associate.wfo.configuration;
+
+public class ApplicationConfig {
+
+}

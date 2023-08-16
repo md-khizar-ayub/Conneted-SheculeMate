@@ -1,0 +1,74 @@
+package com.associate.wfo.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.associate.wfo.model.Associate;
+import com.associate.wfo.model.MonthlyCounts;
+import com.associate.wfo.repository.AssociateRepositary;
+
+@Service
+public class AssociateServiceImp implements AssociateService {
+
+	@Autowired
+	private AssociateRepositary associateRepositary;
+	@Autowired
+	private MonthlyCounts counts;
+
+	public Associate datesSubmite(Associate associate) {
+		try {
+		int count =associateRepositary.findBydateAndAssociateId(associate.getAssociateId(), associate.getMonth());
+		System.out.println("Count --------- : "+count);
+		if(count<1){
+
+			return associateRepositary.save(associate);
+
+			} else {
+
+				associateRepositary.updateAssociateDays(associate.getAssociateId(), associate.getMonth(), associate.getSubmiteddate(),
+						associate.getDay1(), associate.getDay2(), associate.getDay3(), associate.getDay4(),
+						associate.getDay5(), associate.getDay6(), associate.getDay7(), associate.getDay8());
+
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Associate> getallassociatesdates() {
+		List<Associate> allassociatesdates = associateRepositary.findAll();
+		return allassociatesdates;
+	}
+
+	public List<MonthlyCounts> findAssociateCountsByMonth() {
+	    List<Object[]> results = associateRepositary.findAssociateCountsByMonth();
+	    List<MonthlyCounts> monthlyCounts = new ArrayList<MonthlyCounts>();
+
+	    for (Object[] row : results) {
+	      String month = monthToWord(row[0]);
+	      Long fivedayCount = (Long) row[1];
+	      Long eigthdayCount = (Long) row[2];
+
+	      MonthlyCounts counts = new MonthlyCounts(month, fivedayCount, eigthdayCount);
+//	      counts.setMonth(month);
+//	      counts.setFiveday(fivedayCount);
+//	      counts.setEigthday(eigthdayCount);
+	      monthlyCounts.add(counts);
+	    }
+		return monthlyCounts;
+	}
+	private String monthToWord(Object month) {
+	    String[] splitMonth = month.toString().split("-");
+	    int monthNumber = Integer.parseInt(splitMonth[1]);
+	    String[] monthArray = new String[] {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+	    return monthArray[monthNumber - 1]+"-"+splitMonth[0].toString().substring(2);
+		
+	}
+
+
+}

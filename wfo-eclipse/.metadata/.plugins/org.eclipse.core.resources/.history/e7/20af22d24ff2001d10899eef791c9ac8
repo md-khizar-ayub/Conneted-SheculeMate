@@ -1,0 +1,7 @@
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.properties.hibernate.show_sql = true
+logging.level.org.hibernate.type.descriptor.sql = trace
+spring.datasource.url = jdbc:mysql://89.117.157.132:3306/u662917864_Associate
+spring.datasource.username = u662917864_USER123
+spring.datasource.password = Pa$$W0rd
